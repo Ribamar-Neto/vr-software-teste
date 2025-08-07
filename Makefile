@@ -1,13 +1,15 @@
-local/start: # Executa um server FastAPI
+local/start:
 	uvicorn src.main:app --port 8008 --reload
 
-test: # Executa os testes e retorna os erros e porcentagens de coverage.
-	pytest --cov-report term-missing --cov-report html --cov-branch --cov .
+test:
+	pytest --cov-report=term-missing --cov-report=html --cov-report=xml --cov-branch --cov src/
 
-lint: # Executa o lint para formatar e verificar erros.
+lint:
 	@echo
 	ruff format .
 	@echo
 	ruff check --silent --exit-zero --fix .
 	@echo
 	ruff check .
+	@echo
+	mypy .
