@@ -9,5 +9,5 @@ class NotificationService(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def mark_as_sent(self, notification_id: str) -> bool:
+    async def mark_as_delivered(self, notification_id: str) -> bool:
         raise NotImplementedError

@@ -4,19 +4,16 @@ from uuid import UUID
 
 from pydantic import BaseModel, Field
 
-from entities import Notification
-from src.enums import (
-    NotificationStatusEnum,
-    NotificationTypeEnum,
-)
+from src.entities import Notification
+from src.enums import NotificationStatusEnum, NotificationTypeEnum
 
 
 class NotificationOutput(BaseModel):
-    trace_id: UUID = Field(default=None, examples=['224e4687-e89b-12d3-a456-426697174000'])
-    message_id: UUID | None = Field(default=None, examples=['123e4567-e89b-12d3-a456-426614174000'])
-    message_content: str = Field(default=None, examples=['Notification content'])
-    notification_type: NotificationTypeEnum = Field(default=NotificationTypeEnum.EMAIL)
-    status: NotificationStatusEnum = Field(default=NotificationStatusEnum.RECEIVED)
+    trace_id: UUID = Field(examples=['123e4567-e89b-12d3-a456-426614174000'])
+    message_id: UUID | None = Field(default=None, examples=['550e8400-e29b-41d4-a716-446655440000'])
+    message_content: str = Field(examples=['Notification content example'])
+    notification_type: NotificationTypeEnum = Field(examples=[NotificationTypeEnum.EMAIL])
+    status: NotificationStatusEnum = Field(examples=[NotificationStatusEnum.RECEIVED])
 
     @staticmethod
     def from_entity(notification: Notification) -> NotificationOutput:

@@ -1,7 +1,7 @@
 import logging
 
 import aio_pika
-from aio_pika import DeliveryMode, logger
+from aio_pika import DeliveryMode, Message
 from aio_pika.abc import AbstractRobustConnection
 
 from src.entities import Notification
