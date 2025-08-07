@@ -13,6 +13,15 @@ test-async-complete: # Executa testes assíncronos completos com pytest-asyncio.
 test-all-async: # Executa todos os testes incluindo assíncronos com pytest-asyncio.
 	pytest --cov=src --cov-report=term-missing --cov-report=html --cov-report=xml --cov-branch --asyncio-mode=auto -v --tb=short
 
+consumer/entrada: # Executa o consumidor de entrada
+	python src/run_entrada_consumer.py
+
+start: # Executa o FastAPI com consumidores integrados
+	uvicorn src.main:app --port 8008 --reload
+
+start/consumers: # Executa apenas os consumidores (sem FastAPI)
+	python src/run_entrada_consumer.py
+
 lint:
 	@echo
 	ruff format .
