@@ -2,32 +2,32 @@ import pytest
 
 from src.entities import Notification
 from src.enums.notification_type_enum import NotificationTypeEnum
-from src.repositories import NotificationRepository
-from src.services import NotificationService
+from src.repositories.notification_repository_in_memory import NotificationRepositoryInMemory
+from src.services.notification_service_rabbitmq import NotificationServiceRabbitMQ
 from src.use_cases import CreateNotificationUseCase, FindNotificationUseCase
 
 
 @pytest.fixture
-def notification_repository() -> NotificationRepository:
-    return NotificationRepository
+def notification_repository() -> NotificationRepositoryInMemory:
+    return NotificationRepositoryInMemory()
 
 
 @pytest.fixture
-def notification_service() -> NotificationService:
-    return NotificationService
+def notification_service() -> NotificationServiceRabbitMQ:
+    return NotificationServiceRabbitMQ(url='amqp://test', queue_name='test_queue')
 
 
 @pytest.fixture
 def find_notification_usecase(
-    notification_repository: NotificationRepository,
+    notification_repository: NotificationRepositoryInMemory,
 ) -> FindNotificationUseCase:
     return FindNotificationUseCase(notification_repository)
 
 
 @pytest.fixture
 def create_notification_usecase(
-    notification_repository: NotificationRepository,
-    notification_service: NotificationService,
+    notification_repository: NotificationRepositoryInMemory,
+    notification_service: NotificationServiceRabbitMQ,
 ) -> CreateNotificationUseCase:
     return CreateNotificationUseCase(notification_repository, notification_service)
 

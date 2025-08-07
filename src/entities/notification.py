@@ -41,4 +41,5 @@ class Notification:
             'message_id': self.message_id,
             'message_content': self.message_content,
             'notification_type': self.notification_type,
+            'status': self.status,
         }
