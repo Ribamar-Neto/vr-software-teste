@@ -2,10 +2,7 @@ from __future__ import annotations
 
 from uuid import UUID, uuid4
 
-from src.enums import (
-    NotificationStatusEnum,
-    NotificationTypeEnum,
-)
+from src.enums import NotificationStatusEnum, NotificationTypeEnum
 
 
 class Notification:
@@ -23,13 +20,13 @@ class Notification:
         self.notification_type = notification_type
         self.status = status
 
-    def update_status(self, status: NotificationStatusEnum) -> None:
-        self.status = status
+    def update_status(self, new_status: NotificationStatusEnum) -> None:
+        self.status = new_status
 
     @classmethod
     def create(
-        cls, message_id: UUID, message_content: str, notification_type: NotificationTypeEnum
-        ) -> Notification:
+        cls, message_id: UUID | None, message_content: str, notification_type: NotificationTypeEnum
+    ) -> Notification:
         return cls(
             trace_id=uuid4(),
             message_id=message_id or uuid4(),
@@ -44,4 +41,5 @@ class Notification:
             'message_id': self.message_id,
             'message_content': self.message_content,
             'notification_type': self.notification_type,
+            'status': self.status,
         }

@@ -1,13 +1,33 @@
-local/start: # Executa um server FastAPI
+local/start:
 	uvicorn src.main:app --port 8008 --reload
 
 test: # Executa os testes e retorna os erros e porcentagens de coverage.
-	pytest --cov-report term-missing --cov-report html --cov-branch --cov .
+	pytest --cov=src --cov-report=term-missing --cov-report=html --cov-report=xml --cov-branch
 
-lint: # Executa o lint para formatar e verificar erros.
+test-async: # Executa apenas testes assíncronos com pytest-asyncio.
+	pytest --cov=src --cov-report=term-missing --cov-report=html --cov-report=xml --cov-branch -m async
+
+test-async-complete: # Executa testes assíncronos completos com pytest-asyncio.
+	pytest --cov=src --cov-report=term-missing --cov-report=html --cov-report=xml --cov-branch -m async -v --tb=short --strict-markers --disable-warnings --durations=10
+
+test-all-async: # Executa todos os testes incluindo assíncronos com pytest-asyncio.
+	pytest --cov=src --cov-report=term-missing --cov-report=html --cov-report=xml --cov-branch --asyncio-mode=auto -v --tb=short
+
+consumer/entrada: # Executa o consumidor de entrada
+	python src/run_entrada_consumer.py
+
+start: # Executa o FastAPI com consumidores integrados
+	uvicorn src.main:app --port 8008 --reload
+
+start/consumers: # Executa apenas os consumidores (sem FastAPI)
+	python src/run_entrada_consumer.py
+
+lint:
 	@echo
 	ruff format .
 	@echo
 	ruff check --silent --exit-zero --fix .
 	@echo
 	ruff check .
+	@echo
+	mypy .
